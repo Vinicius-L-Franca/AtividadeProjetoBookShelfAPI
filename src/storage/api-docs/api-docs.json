@@ -1,0 +1,727 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "BookShelf API",
+        "description": "API REST para gerenciar uma estante de livros por gêneros.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8000",
+            "description": "Servidor local"
+        }
+    ],
+    "paths": {
+        "/api/books": {
+            "get": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Listar livros",
+                "description": "Retorna todos os livros cadastrados. Inclui o gênero relacionado (campo 'genre').",
+                "operationId": "9017a3fa89d6636329067c858b27a6fa",
+                "responses": {
+                    "200": {
+                        "description": "Lista de livros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Book"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Criar livro",
+                "description": "Cria um novo livro.",
+                "operationId": "72f82e1cd6f08112323f87053277ca99",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "genre_id",
+                                    "title",
+                                    "author",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "genre_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Clean Code",
+                                        "maxLength": 255
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "Robert C. Martin",
+                                        "maxLength": 255
+                                    },
+                                    "pages": {
+                                        "type": "integer",
+                                        "example": 464,
+                                        "nullable": true
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "reading",
+                                        "enum": [
+                                            "to_read",
+                                            "reading",
+                                            "finished"
+                                        ]
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true,
+                                        "maximum": 5,
+                                        "minimum": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Livro criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/books/{id}": {
+            "get": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Exibir livro",
+                "description": "Retorna um livro específico pelo ID. Inclui o gênero relacionado (campo 'genre').",
+                "operationId": "123856ec83e3466396b979a43eb1a15f",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do livro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Livro encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Livro não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Atualizar livro",
+                "description": "Atualiza um livro existente pelo ID.",
+                "operationId": "2fc15aa806ac989f4d2b201b5952714d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do livro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "genre_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Clean Code",
+                                        "maxLength": 255
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "Robert C. Martin",
+                                        "maxLength": 255
+                                    },
+                                    "pages": {
+                                        "type": "integer",
+                                        "example": 464,
+                                        "nullable": true
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "finished",
+                                        "enum": [
+                                            "to_read",
+                                            "reading",
+                                            "finished"
+                                        ]
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true,
+                                        "maximum": 5,
+                                        "minimum": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Livro atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Livro não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Excluir livro",
+                "description": "Exclui um livro pelo ID.",
+                "operationId": "eda12c526d0ccacaecea5f3d8f15d6df",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do livro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Livro excluído"
+                    },
+                    "404": {
+                        "description": "Livro não encontrado"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Livros"
+                ],
+                "summary": "Atualizar parcialmente livro",
+                "description": "Atualiza parcialmente um livro existente pelo ID.",
+                "operationId": "3c5c1488774a14a2fa2e72f9ccee25d5",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do livro",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "genre_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "example": "Clean Code",
+                                        "maxLength": 255
+                                    },
+                                    "author": {
+                                        "type": "string",
+                                        "example": "Robert C. Martin",
+                                        "maxLength": 255
+                                    },
+                                    "pages": {
+                                        "type": "integer",
+                                        "example": 464,
+                                        "nullable": true
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "finished",
+                                        "enum": [
+                                            "to_read",
+                                            "reading",
+                                            "finished"
+                                        ]
+                                    },
+                                    "rating": {
+                                        "type": "integer",
+                                        "example": 5,
+                                        "nullable": true,
+                                        "maximum": 5,
+                                        "minimum": 1
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Livro atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Book"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Livro não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/genres": {
+            "get": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Listar gêneros",
+                "description": "Retorna todos os gêneros cadastrados.",
+                "operationId": "0ff78353b1c27ef8905e58f3cf31370a",
+                "responses": {
+                    "200": {
+                        "description": "Lista de gêneros",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array",
+                                    "items": {
+                                        "$ref": "#/components/schemas/Genre"
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Criar gênero",
+                "description": "Cria um novo gênero.",
+                "operationId": "8d21057e41193b21373f4e2cce0a8c73",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ficção",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Romances e histórias fictícias",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gênero criado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Genre"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        },
+        "/api/genres/{id}": {
+            "get": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Exibir gênero",
+                "description": "Retorna um gênero específico pelo ID.",
+                "operationId": "cec9d00fae56cff69cba705f6b436983",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Gênero encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Genre"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gênero não encontrado"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Atualizar gênero",
+                "description": "Atualiza um gênero existente pelo ID.",
+                "operationId": "9ec4944f7fd50bd7280fb1366c748709",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ficção",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição atualizada",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gênero atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Genre"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gênero não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Excluir gênero",
+                "description": "Exclui um gênero pelo ID.",
+                "operationId": "1890f1018746d6e4385aa0c3244acc08",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Gênero excluído"
+                    },
+                    "404": {
+                        "description": "Gênero não encontrado"
+                    }
+                }
+            },
+            "patch": {
+                "tags": [
+                    "Gêneros"
+                ],
+                "summary": "Atualizar parcialmente gênero",
+                "description": "Atualiza parcialmente um gênero existente pelo ID.",
+                "operationId": "267965d763a2c67745c6afab91e4a9f6",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID do gênero",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Ficção",
+                                        "maxLength": 255
+                                    },
+                                    "description": {
+                                        "type": "string",
+                                        "example": "Descrição atualizada",
+                                        "nullable": true
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Gênero atualizado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Genre"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Gênero não encontrado"
+                    },
+                    "422": {
+                        "description": "Erro de validação"
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Book": {
+                "required": [
+                    "id",
+                    "genre_id",
+                    "title",
+                    "author",
+                    "status",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "genre_id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "title": {
+                        "type": "string",
+                        "example": "1984"
+                    },
+                    "author": {
+                        "type": "string",
+                        "example": "George Orwell"
+                    },
+                    "pages": {
+                        "type": "integer",
+                        "example": 328,
+                        "nullable": true
+                    },
+                    "status": {
+                        "type": "string",
+                        "example": "to_read",
+                        "enum": [
+                            "to_read",
+                            "reading",
+                            "finished"
+                        ]
+                    },
+                    "rating": {
+                        "type": "integer",
+                        "example": 5,
+                        "nullable": true,
+                        "maximum": 5,
+                        "minimum": 1
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-04-07T14:09:44.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-04-07T14:09:44.000000Z"
+                    },
+                    "genre": {
+                        "oneOf": [
+                            {
+                                "$ref": "#/components/schemas/Genre"
+                            }
+                        ],
+                        "nullable": true
+                    }
+                },
+                "type": "object"
+            },
+            "Genre": {
+                "required": [
+                    "id",
+                    "name",
+                    "created_at",
+                    "updated_at"
+                ],
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "example": 1
+                    },
+                    "name": {
+                        "type": "string",
+                        "example": "Ficção"
+                    },
+                    "description": {
+                        "type": "string",
+                        "example": "Romances e histórias fictícias",
+                        "nullable": true
+                    },
+                    "created_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-04-07T14:09:44.000000Z"
+                    },
+                    "updated_at": {
+                        "type": "string",
+                        "format": "date-time",
+                        "example": "2026-04-07T14:09:44.000000Z"
+                    }
+                },
+                "type": "object"
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Livros",
+            "description": "Operações relacionadas a livros."
+        },
+        {
+            "name": "Gêneros",
+            "description": "Operações relacionadas a gêneros literários."
+        }
+    ]
+}
